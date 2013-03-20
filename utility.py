@@ -6,7 +6,13 @@ import re
 
 from datetime import datetime
 
-# date format and string substitution procedures for wiki pages last edited footer
+def make_dict_from_params(params, paramDict):
+  params = params.split('&')
+  for param in params:
+    paramPair = param.split('=')
+    paramDict[paramPair.pop()] = paramPair.pop()
+  
+# date format and string substitution procedures 
 
 def format_datetime(date_time):
   time_format = '%c' 
@@ -41,7 +47,7 @@ def email_validate(e):
 
 # cookie setting stuff
 
-secret = 'you will never guess me'
+secret = 'you will never be able to guess me'
 
 def make_secure_val(val):
   return '%s|%s' % (val, hmac.new(secret, val).hexdigest())

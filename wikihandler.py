@@ -1,8 +1,18 @@
 import web
 import os
 import jinja2
+import logging
+from utility import *
 
 class Handler:
+
+  def __init__(self):
+    logging.warning('initialize method')
+    user = self.read_user_cookie()
+    if user is None:
+      self.set_user_cookie('aaron')
+      user = self.read_user_cookie()
+    logging.warning(user)
 
   def render(self, templateName, **context):
     extensions = context.pop('extensions', [])
@@ -16,21 +26,40 @@ class Handler:
     return jinja_env.get_template(templateName).render(context)
 
   def set_user_cookie(self, val):
-    name = 'user_id'
-    secret_key = make_secure_val(val)
-    web.config.session_parameters['cookie_name'] = name
-    web.config.session_parameters['secret_key'] = secret_key
+    secretKey = make_secure_val(val)
+    web.setcookie(name='user_id',
+      value=secretKey, 
+      expires=3600,
+      secure=False)
+  
+  def read_user_cookie(self):
+    cookieValue = web.cookies().get('user_id')
+    return cookieValue and check_secure_val(cookieValue)
 
 class index(Handler):
 
   def GET(self):
     return self.render('index.html')
 
+class Login(Handler):
+
+  def GET(self):
+    return self.render('login-form.html')
+
+  def POST(self):
+    params = web.data()
+    paramDict = dict()
+    make_dict_from_params(params, paramDict)
+    logging.warning(paramDict)
+    web.seeother('/login')
+
+#  def POST(self):
+    
 PAGE_RE = '(/(?:[a-zA-Z0-9_-]+/?)*)'
 
 urls = (
-  '/', 'index'#,
-#  '/login/?', Login,
+  '/', 'index',
+  '/login/?', Login #,
 #  '/logout/?', Logout,
 #  '/signup/?', Singup,
 #  '/_edit/?' + PAGE_RE, EditPage,
