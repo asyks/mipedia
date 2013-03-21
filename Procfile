@@ -1,1 +1,1 @@
-web: python handler.py $PATH
+web: python wikihandler.py $PATH

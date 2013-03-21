@@ -7,11 +7,11 @@ from utility import *
 class Handler:
 
   def __init__(self):
-    logging.warning('initialize method')
+    self.lastPage = '/'
     user = self.read_user_cookie()
-    if user is None:
-      self.set_user_cookie('aaron')
-      user = self.read_user_cookie()
+#    if user is None:
+#      self.set_user_cookie('aaron')
+#      user = self.read_user_cookie()
     logging.warning(user)
 
   def render(self, templateName, **context):
@@ -32,6 +32,13 @@ class Handler:
       expires=3600,
       secure=False)
   
+  def remove_user_cookie(self):
+    logging.warning('remove user cookie')
+    web.setcookie(name='user_id',
+      value='', 
+      expires=-1,
+      secure=False)
+
   def read_user_cookie(self):
     cookieValue = web.cookies().get('user_id')
     return cookieValue and check_secure_val(cookieValue)
@@ -50,17 +57,21 @@ class Login(Handler):
     params = web.data()
     paramDict = dict()
     make_dict_from_params(params, paramDict)
-    logging.warning(paramDict)
-    web.seeother('/login')
+    self.set_user_cookie(val=paramDict.get('username'))
+    web.seeother(self.lastPage)
 
-#  def POST(self):
-    
+class Logout(Handler):
+
+  def GET(self):
+    self.remove_user_cookie()
+    web.seeother(self.lastPage)
+
 PAGE_RE = '(/(?:[a-zA-Z0-9_-]+/?)*)'
 
 urls = (
   '/', 'index',
-  '/login/?', Login #,
-#  '/logout/?', Logout,
+  '/login/?', Login ,
+  '/logout/?', Logout#,
 #  '/signup/?', Singup,
 #  '/_edit/?' + PAGE_RE, EditPage,
 #  '/_history' + PAGE_RE, History,
