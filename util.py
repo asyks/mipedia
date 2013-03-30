@@ -1,18 +1,16 @@
-import hashlib
-import hmac
-import string
-import random
-import re
+#!/usr/bin/python
 
+import hashlib, hmac, string, random, re
 from datetime import datetime
 
+## deprecated method for making a dict out of a web.data() return str
 def make_dict_from_params(params, paramDict):
   params = params.split('&')
   for param in params:
     paramPair = param.split('=')
     paramDict[paramPair.pop()] = paramPair.pop()
   
-# date format and string substitution procedures 
+## date format and string substitution procedures 
 
 def format_datetime(date_time):
   time_format = '%c' 
@@ -21,7 +19,7 @@ def format_datetime(date_time):
 def make_last_edit_str(time):
   return 'This page was last edited on: %s' % time
  
-# sign-up form validation stuff
+## sign-up form validation stuff
 
 USER_RE = re.compile("^[a-zA-Z0-9_-]{3,20}$")
 PASS_RE = re.compile("^.{3,20}$")
@@ -45,7 +43,7 @@ def email_validate(e):
   if e and EMAIL_RE.match(e):
     return True
 
-# cookie setting stuff
+## cookie setting stuff
 
 secret = 'you will never be able to guess me'
 
@@ -57,7 +55,7 @@ def check_secure_val(secure_val):
   if secure_val == make_secure_val(val):
     return val 
 
-# password hashing stuff
+## password hashing stuff
 
 def make_salt():
   return ''.join(random.choice(string.letters) for x in range(5))
