@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <div class="wiki-header">
+		<div class="edit-and-history">
+			{{ edit | safe }} {% if edit %}|{% endif %} {{ history | safe }}
+		</div>
+		<div class="login-and-logout">
+			{{ auth | safe }}
+		</div>
+	</div>
+
+    <br>
+
+		<div id="wiki-title">{{ title }}</div>
+		<br>
+
+		<form id="wiki-edit" method="post">
+
+			<table>
+				<tr>
+					<td><textarea name="content">{{content|safe}}</textarea></td>
+				</tr>
+			</table>
+  
+			<input type="submit">
+
+		</form>
+
+    <br>
+    <div id="edited">{{ edited }}</div>
+
+{% endblock %}

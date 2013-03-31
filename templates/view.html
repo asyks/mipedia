@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <div class="wiki-header">
+		<div class="edit-and-history">
+			{{ edit | safe }} {% if edit %}|{% endif %} {{ history | safe }}
+		</div>
+		<div class="login-and-logout">
+			{{ auth | safe }}
+		</div>
+	</div>
+   
+    <br>
+		<div class="wiki-title" id="title">{{ title }}</div>
+		<br>
+		<div class="wiki-content" name="content">{{content|safe}}</div>
+    <br>
+    <div class="wiki-footer" id="edited">{{ edited }}</div>
+
+{% endblock %}

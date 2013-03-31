@@ -22,30 +22,26 @@ class Handler:
     else:
       session.login = 0
 
-  def login(self, d=None, u=None):
-    if not d:
-      try:
-        d = dbm.users.select_by_name(u).get('id')
-      except AttributeError:
-        web.seeother(self.lastPage)
-    self.set_user_cookie(d)
-    session.login = 1
+  def login(self, u, p):
+    r = dbm.users.select_by_name(u)[0]
+    if r and util.check_hash(u, p, r.get('passwordhash')):
+      d = r.get('id')
+      self.set_user_cookie(d)
+      session.login = 1
+    else:
+      logging.warning('passwords do not match')
     return session.login
 
   def logout(self):
     self.remove_user_cookie()
     session.login = 0
-    session.kill()
-    return 0
+    return session.login
 
   def logged(self):
-    if session.login == 1:
-      return True
-    else:
-      return False
+    return session.login == 1
 
   def set_user_cookie(self, val):
-    secureVal = util.make_secure_val(val)
+    secureVal = util.make_secure_val(str(val))
     web.setcookie(name='user',value=secureVal,
       expires=3600,secure=False)
   
@@ -103,7 +99,7 @@ class SignUp(Handler):
       return self.render('signup.html', **self.p)
     else:
       dbm.users.insert_one(u=i.username, p=i.password, e=i.email)
-      s = self.login()
+      s = self.login(i.username, i.password)
       raise web.seeother(self.lastPage) ## try replace raise w/ return
 
 class Login(Handler):
@@ -112,26 +108,34 @@ class Login(Handler):
     if self.logged():
       web.seeother(self.lastPage)
     else:
-      return self.render('login-form.html')
+      return self.render('login.html')
 
   def POST(self):
     i = web.input()
-    s = self.login(u=i.username)
+    s = self.login(u=i.username, p=i.password)
     raise web.seeother(self.lastPage)
 
 class Logout(Handler):
 
   def GET(self):
-    s = self.logout 
+    s = self.logout() 
     raise web.seeother(self.lastPage)
+
+class WikiRead(Handler):
+  
+  def GET(self, topic):
+    return "Wiki Read page"
 
 PAGE_RE = '(/(?:[a-zA-Z0-9_-]+/?)*)'
 
 urls = (
-  '/', Index,
+  '/?', Index,
+  '/signup/?', SignUp,
   '/login/?', Login,
   '/logout/?', Logout,
-  '/signup/?', SignUp
+#  '/_edit/' + PAGE_RE, WikiEdit,
+#  '/_hist/' + PAGE_RE, WikiHist,
+  PAGE_RE, WikiRead
 )
 
 if __name__ == "__main__":

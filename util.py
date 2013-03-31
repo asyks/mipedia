@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import hashlib, hmac, string, random, re
+import logging
 from datetime import datetime
 
 ## deprecated method for making a dict out of a web.data() return str
@@ -67,6 +68,7 @@ def make_hash(un, pw, salt=None):
   return '%s|%s' % (salt, h)
 
 def check_hash(un, pw, h):
+  h = string.rstrip(h) ## if I adjust psql users table I won't need it
   salt = h.split('|')[0]
   if h == make_hash(un, pw, salt):
     return True

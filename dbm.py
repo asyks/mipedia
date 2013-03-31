@@ -15,16 +15,35 @@ class users:
 
   @classmethod
   def select_all(cls):
-    db.select('users')
+    return db.select('users')
 
   @classmethod
-  def select_by_id(cls, i):
-    db.select('users', where='id=%s' % i)
+  def select_by_id(cls, d):
+    return db.select('users', vars=dict(d=d), where='id=$d')
 
   @classmethod
   def select_by_name(cls, u):
-    db.select('users', where="username='%s'" % u)
+    return db.select('users', vars=dict(u=u), where='username=$u')
 
   @classmethod
   def select_by_email(cls, e):
-    db.select('users', where="email='%s'" % e)
+    return db.select('users', vars=dict(e=e), where='email=$e')
+
+class wikis:
+
+  @classmethod
+  def insert_one(cls, t, v, c):
+    db.insert('wikis', title=t, v=version, content=c or None)
+
+  @classmethod
+  def select_all(cls):
+    return db.select('wikis')
+
+  @classmethod
+  def select_by_title(cls, t):
+    return db.select('wikis', vars=dict(t=t), where='title=$t')
+
+  @classmethod
+  def select_by_title_and_version(cls, t, v):
+    return db.select('wikis', vars=dict(t=t,v=v), 
+      where='title=$t and version=$v')
