@@ -18,9 +18,13 @@ class users:
     db.select('users')
 
   @classmethod
+  def select_by_id(cls, i):
+    db.select('users', where='id=%s' % i)
+
+  @classmethod
   def select_by_name(cls, u):
     db.select('users', where="username='%s'" % u)
 
   @classmethod
-  def select_by_id(cls, i):
-    db.select('users', where='id=%s' % i)
+  def select_by_email(cls, e):
+    db.select('users', where="email='%s'" % e)

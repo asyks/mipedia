@@ -5,24 +5,38 @@ import dbm, util
 #from utility import *
 
 web.config.debug = False
-
-db = web.database(dbn='postgres',
-    user='aaron', pw='gimmie some sql', db='wiki1')
-
 app = web.application(urls, globals())
-store = web.session.DiskStore('sessions')
-session = web.session.Session(app, store,
-  initializer={'login': 0, 'privilege': 0})
+store = web.session.DBStore(db, 'sessions')
+session = web.session.Session(app, store)
+session.login = session.privilage = 0
 
 class Handler:
 
   def __init__(self):
     self.lastPage = '/'
-    self.params = dict()
-#    user = self.read_user_cookie()
-#    if user is None:
-#      self.set_user_cookie('aaron')
-#      user = self.read_user_cookie()
+    self.p = dict()
+    user = self.read_user_cookie()
+    logging.warning(user)
+    if user:
+      session.login = 1
+    else:
+      session.login = 0
+
+  def login(self, d=None, u=None):
+    if not d:
+      try:
+        d = dbm.users.select_by_name(u).get('id')
+      except AttributeError:
+        web.seeother(self.lastPage)
+    self.set_user_cookie(d)
+    session.login = 1
+    return session.login
+
+  def logout(self):
+    self.remove_user_cookie()
+    session.login = 0
+    session.kill()
+    return 0
 
   def logged(self):
     if session.login == 1:
@@ -30,8 +44,17 @@ class Handler:
     else:
       return False
 
-  def set_user_session(self):
-    session.login = 1
+  def set_user_cookie(self, val):
+    secureVal = util.make_secure_val(val)
+    web.setcookie(name='user',value=secureVal,
+      expires=3600,secure=False)
+  
+  def remove_user_cookie(self):
+    web.setcookie(name='user',value='',expires=-1,secure=False)
+
+  def read_user_cookie(self):
+    cookieValue = web.cookies().get('user')
+    return cookieValue and check_secure_val(cookieValue)
 
   def render(self, templateName, **context):
     extensions = context.pop('extensions', [])
@@ -44,18 +67,6 @@ class Handler:
       extensions=extensions)
     return jinja_env.get_template(templateName).render(context)
 
-  def set_user_cookie(self, cookieName, val):
-    secureVal = util.make_secure_val(val)
-    web.setcookie(name=cookieName,value=secureVal,
-      expires=3600,secure=False)
-  
-  def remove_user_cookie(self, cookieName):
-    web.setcookie(name=cookieName,value='',expires=-1,secure=False)
-
-  def read_user_cookie(self, cookieName):
-    cookieValue = web.cookies().get(cookieName)
-    return cookieValue and check_secure_val(cookieValue)
-
 class Index(Handler):
 
   def GET(self):
@@ -64,51 +75,60 @@ class Index(Handler):
 class SignUp(Handler):
 
   def GET(self):
-    return self.render('signup-form.html')
+    return self.render('signup.html')
 
   def POST(self):
     i = web.input()
     have_error = False
     if not util.user_validate(i.username):
       have_error = True
-      self.params['errorUsername'] = 'Invalid Username'
-    elif not dbm.users.select_by_name(i.username):
+      self.p['errorUsername'] = 'Invalid Username'
+    elif dbm.users.select_by_name(i.username):
       have_error = True
-      self.params['errorUsername'] = 'Username already taken'
-    
+      self.p['errorUsername'] = 'Username already taken'
+    if not util.password_validate(i.password):
+      have_error = True
+      self.p['errorPassword'] = 'Invalid Password'
+    elif not util.password_verify(i.password, i.verify):
+      have_error = True
+      self.p['errorPassword'] = 'Passwords don\'t match'
+    if not email_validate(i.email):
+      have_error=True
+      self.p['errorEmail'] = 'email address not valid'
+    elif dbm.users.select_by_email(i.email):
+      have_error=True
+      self.p['errorEmail'] = 'email address already taken'
     if have_error:
-#    logging.warning('%s, %s, %s, %s' % (i.username, i.password, 
-#      i.verify, i.email))
+      self.p['username'], self.p['email'] = i.username, i.email
+      return self.render('signup.html', **self.p)
+    else:
       dbm.users.insert_one(u=i.username, p=i.password, e=i.email)
+      s = self.login()
       raise web.seeother(self.lastPage) ## try replace raise w/ return
 
 class Login(Handler):
 
   def GET(self):
-    try:
-      if self.logged():
-        logging.warning('already logged in log out first')
-        web.seeother(lastPage)
-      else:
-        return self.render('login-form.html')
-    except:
+    if self.logged():
+      web.seeother(self.lastPage)
+    else:
       return self.render('login-form.html')
 
   def POST(self):
     i = web.input()
-    util.check_hash(i.username, i.password)
+    s = self.login(u=i.username)
     raise web.seeother(self.lastPage)
 
 class Logout(Handler):
 
   def GET(self):
-    self.remove_user_cookie()
+    s = self.logout 
     raise web.seeother(self.lastPage)
 
 PAGE_RE = '(/(?:[a-zA-Z0-9_-]+/?)*)'
 
 urls = (
-  '/', index,
+  '/', Index,
   '/login/?', Login,
   '/logout/?', Logout,
   '/signup/?', SignUp
