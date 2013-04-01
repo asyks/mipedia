@@ -15,21 +15,25 @@ class Handler:
   def __init__(self):
     self.lastPage = '/'
     self.p = dict()
-    user = self.read_user_cookie()
-    logging.warning(user)
-    if user:
+    self.u = self.read_user_cookie()
+    logging.warning(self.u)
+    if self.u:
       session.login = 1
     else:
       session.login = 0
 
   def login(self, u, p):
-    r = dbm.users.select_by_name(u)[0]
-    if r and util.check_hash(u, p, r.get('passwordhash')):
-      d = r.get('id')
-      self.set_user_cookie(d)
-      session.login = 1
-    else:
-      logging.warning('passwords do not match')
+    try:
+      r = dbm.users.select_by_name(u)[0]
+      if r and util.check_hash(u, p, r.get('passwordhash')):
+        self.set_user_cookie(u)
+        session.login = 1
+      else:
+        logging.warning('passwords do not match')
+        session.login = 0
+    except error:
+      logging.warning('there was an error logging in')
+      session.login = 0
     return session.login
 
   def logout(self):
@@ -123,19 +127,50 @@ class Logout(Handler):
 
 class WikiRead(Handler):
   
-  def GET(self, topic):
-    return "Wiki Read page"
+  def GET(self, t):
+    i = web.input()
+    try:
+      v = i.v
+    except:
+      v = None
+    try:
+      w = dbm.wikis.select_by_title_and_version(t=t,v=v)[0]
+      self.p['title'], self.p['content'], self.p['edited'] = \
+        w.title, w.content, w.created
+    except:
+      if self.u:
+        dbm.wikis.insert_one(t=t)
+        raise web.seeother('/w/_edit/' + t)
+      else:
+        raise web.seeother(self.lastPage)
+    if self.u:
+      self.p['history'], self.p['auth'], self.p['edit'] = \
+        util.make_logged_in_header(w.title, w.version, self.u)
+    else:
+      self.p['history'], self.p['auth'] = \
+        util.make_logged_out_header(w.title)
+    return self.render('view.html', **self.p)
 
-PAGE_RE = '(/(?:[a-zA-Z0-9_-]+/?)*)'
+class WikiEdit(Handler):
+
+  def GET(self, topic):
+    return 'wiki edit page for %s' % topic
+
+class WikiHist(Handler):
+
+  def GET(self, topic):
+    return 'wiki history page for %s' % topic
+
+PAGE_RE = '((?:[a-zA-Z0-9_-]+))'
 
 urls = (
   '/?', Index,
-  '/signup/?', SignUp,
-  '/login/?', Login,
-  '/logout/?', Logout,
-#  '/_edit/' + PAGE_RE, WikiEdit,
-#  '/_hist/' + PAGE_RE, WikiHist,
-  PAGE_RE, WikiRead
+  '/a/signup/?', SignUp,
+  '/a/login/?', Login,
+  '/a/logout/?', Logout,
+  '/w/_edit/' + PAGE_RE + '/?', WikiEdit,
+  '/w/_hist/' + PAGE_RE + '/?', WikiHist,
+  '/w/' + PAGE_RE + '/?', WikiRead
 )
 
 if __name__ == "__main__":

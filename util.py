@@ -10,7 +10,24 @@ def make_dict_from_params(params, paramDict):
   for param in params:
     paramPair = param.split('=')
     paramDict[paramPair.pop()] = paramPair.pop()
+
+## methods for creating wiki page headers
+
+def make_logged_out_header(t):
+  historyLink = '/w/_hist/' + t
+  historyHtml = '<a href="%s">History</a>' % historyLink
+  signupHtml = '<a href="/w/signup">signup</a>'
+  loginHtml = '<a href="/a/login">Login</a>'
+  authHtml = signupHtml + '|' + loginHtml
+  return historyHtml, authHtml
   
+def make_logged_in_header(t, v, u):
+  historyLink = '/w/_hist/' + t
+  historyHtml = '<a href="%s">History</a>' % historyLink
+  authHtml = '%s(<a href="/a/logout">logout</a>' % u
+  editHtml = '<a href="/w/_edit/%s?v=%s">Edit</a>' % (t,v)
+  return historyHtml, authHtml, editHtml
+
 ## date format and string substitution procedures 
 
 def format_datetime(date_time):

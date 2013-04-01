@@ -32,18 +32,23 @@ class users:
 class wikis:
 
   @classmethod
-  def insert_one(cls, t, v, c):
-    db.insert('wikis', title=t, v=version, content=c or None)
+  def insert_one(cls, t, v=None, c=''):
+    if v:
+      db.insert('wikis', title=t, v=version, content=c)
+    else:
+      db.insert('wikis', title=t, content=c)
 
   @classmethod
   def select_all(cls):
-    return db.select('wikis')
+    return db.select('wikis', order='created DESC')
 
   @classmethod
   def select_by_title(cls, t):
     return db.select('wikis', vars=dict(t=t), where='title=$t')
 
   @classmethod
-  def select_by_title_and_version(cls, t, v):
+  def select_by_title_and_version(cls, t, v=None):
+    if v is None:
+      v = 0
     return db.select('wikis', vars=dict(t=t,v=v), 
-      where='title=$t and version=$v')
+        where='title=$t and version=$v')
