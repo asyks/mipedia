@@ -61,7 +61,7 @@ def email_validate(e):
   if e and EMAIL_RE.match(e):
     return True
 
-## cookie setting stuff
+## cookie setting procedures
 
 secret = 'you will never be able to guess me'
 
@@ -73,7 +73,7 @@ def check_secure_val(secure_val):
   if secure_val == make_secure_val(val):
     return val 
 
-## password hashing stuff
+## password hashing  procedures
 
 def make_salt():
   return ''.join(random.choice(string.letters) for x in range(5))

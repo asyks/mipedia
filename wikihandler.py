@@ -153,13 +153,47 @@ class WikiRead(Handler):
 
 class WikiEdit(Handler):
 
-  def GET(self, topic):
-    return 'wiki edit page for %s' % topic
+  def GET(self, t):
+    if not self.u:
+      raise web.seeother(self.lastPage)
+    i = web.input()
+    try:
+      v = i.v
+    except:
+      v = None
+    try:
+      w = dbm.wikis.select_by_title_and_version(t=t,v=v)[0]
+      self.p['title'], self.p['content'], self.p['edited'] = \
+        w.title, w.content, w.created
+    except:
+      dbm.wikis.insert_one(t=t)
+      w = dbm.wikis.select_by_title_and_version(t=t,v=v)[0]
+      self.p['title'], self.p['content'], self.p['edited'] = \
+        w.title, w.content, w.created
+    self.p['history'], self.p['auth'], self.p['edit'] = \
+      util.make_logged_in_header(w.title, w.version, self.u)
+    return self.render('edit.html', **self.p)
+
+  def POST(self, t):
+    if not self.u:
+      raise web.seeother(self.lastPage)
+    i = web.input()
+    c = i.content
+    v = dbm.wikis.select_by_title(t=t)[0].version + 1
+    dbm.wikis.insert_one(t=t,v=v,c=c)
+    raise web.seeother('/w/%s?v=%s' % (t, v))
 
 class WikiHist(Handler):
 
-  def GET(self, topic):
-    return 'wiki history page for %s' % topic
+  def GET(self, t):
+    if not self.u:
+      raise web.seeother(self.lastPage)
+    w = dbm.wikis.select_by_title(t=t)
+    self.p['page_history'], self.p['title'] = w, t
+    w = w[0]
+    self.p['history'], self.p['auth'], self.p['edit'] = \
+      util.make_logged_in_header(w.title, w.version, self.u)
+    return self.render('hist.html', **self.p)
 
 PAGE_RE = '((?:[a-zA-Z0-9_-]+))'
 

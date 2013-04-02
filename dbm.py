@@ -34,7 +34,7 @@ class wikis:
   @classmethod
   def insert_one(cls, t, v=None, c=''):
     if v:
-      db.insert('wikis', title=t, v=version, content=c)
+      db.insert('wikis', title=t, version=v, content=c)
     else:
       db.insert('wikis', title=t, content=c)
 
@@ -44,7 +44,8 @@ class wikis:
 
   @classmethod
   def select_by_title(cls, t):
-    return db.select('wikis', vars=dict(t=t), where='title=$t')
+    return db.select('wikis', vars=dict(t=t), where='title=$t', 
+      order='created DESC')
 
   @classmethod
   def select_by_title_and_version(cls, t, v=None):
