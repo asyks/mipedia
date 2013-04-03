@@ -3,8 +3,6 @@
 import web, os, hashlib, jinja2, logging
 import dbm, util
 
-web.config.debug = False
-app = web.application(urls, globals())
 PAGE_RE = '((?:[a-zA-Z0-9_-]+))'
 urls = (
   '/?', Index,
@@ -15,7 +13,8 @@ urls = (
   '/w/_hist/' + PAGE_RE + '/?', WikiHist,
   '/w/' + PAGE_RE + '/?', WikiRead
 )
-
+web.config.debug = False
+app = web.application(urls, globals())
 store = web.session.DBStore(db, 'sessions')
 session = web.session.Session(app, store)
 session.login = session.privilage = 0
