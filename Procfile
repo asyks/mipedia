@@ -1,1 +1,1 @@
-web: python wikihandler.py $PATH
+web: python wikihandler.py $PORT

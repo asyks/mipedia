@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import web, os, hashlib, jinja2, logging
+import web, os, hashlib, jinja2, psycopg2, logging
 import dbm, util
 
 class Handler:
