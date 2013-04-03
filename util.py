@@ -12,7 +12,6 @@ def make_dict_from_params(params, paramDict):
     paramDict[paramPair.pop()] = paramPair.pop()
 
 ## methods for creating wiki page headers
-
 def make_logged_out_header(t):
   historyLink = '/w/_hist/' + t
   historyHtml = '<a href="%s">History</a>' % historyLink
@@ -29,7 +28,6 @@ def make_logged_in_header(t, v, u):
   return historyHtml, authHtml, editHtml
 
 ## date format and string substitution procedures 
-
 def format_datetime(date_time):
   time_format = '%c' 
   return date_time.strftime(time_format)
@@ -38,7 +36,6 @@ def make_last_edit_str(time):
   return 'This page was last edited on: %s' % time
  
 ## sign-up form validation stuff
-
 USER_RE = re.compile("^[a-zA-Z0-9_-]{3,20}$")
 PASS_RE = re.compile("^.{3,20}$")
 EMAIL_RE = re.compile("^[\S]+@[\S]+\.[\S]+$")
@@ -62,7 +59,6 @@ def email_validate(e):
     return True
 
 ## cookie setting procedures
-
 secret = 'you will never be able to guess me'
 
 def make_secure_val(val):
@@ -74,7 +70,6 @@ def check_secure_val(secure_val):
     return val 
 
 ## password hashing  procedures
-
 def make_salt():
   return ''.join(random.choice(string.letters) for x in range(5))
 

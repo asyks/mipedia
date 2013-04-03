@@ -1,8 +1,7 @@
-import web, os, hashlib, logging
-import jinja2, psycopg2
-#from db import *
+#!/usr/bin/env python
+
+import web, os, hashlib, jinja2, logging
 import dbm, util
-#from utility import *
 
 web.config.debug = False
 app = web.application(urls, globals())
