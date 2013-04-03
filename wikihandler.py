@@ -5,6 +5,17 @@ import dbm, util
 
 web.config.debug = False
 app = web.application(urls, globals())
+PAGE_RE = '((?:[a-zA-Z0-9_-]+))'
+urls = (
+  '/?', Index,
+  '/a/signup/?', SignUp,
+  '/a/login/?', Login,
+  '/a/logout/?', Logout,
+  '/w/_edit/' + PAGE_RE + '/?', WikiEdit,
+  '/w/_hist/' + PAGE_RE + '/?', WikiHist,
+  '/w/' + PAGE_RE + '/?', WikiRead
+)
+
 store = web.session.DBStore(db, 'sessions')
 session = web.session.Session(app, store)
 session.login = session.privilage = 0
@@ -193,18 +204,6 @@ class WikiHist(Handler):
     self.p['history'], self.p['auth'], self.p['edit'] = \
       util.make_logged_in_header(w.title, w.version, self.u)
     return self.render('hist.html', **self.p)
-
-PAGE_RE = '((?:[a-zA-Z0-9_-]+))'
-
-urls = (
-  '/?', Index,
-  '/a/signup/?', SignUp,
-  '/a/login/?', Login,
-  '/a/logout/?', Logout,
-  '/w/_edit/' + PAGE_RE + '/?', WikiEdit,
-  '/w/_hist/' + PAGE_RE + '/?', WikiHist,
-  '/w/' + PAGE_RE + '/?', WikiRead
-)
 
 if __name__ == "__main__":
   app.run()
