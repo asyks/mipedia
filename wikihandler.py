@@ -199,8 +199,8 @@ urls = (
 )
 web.config.debug = False
 app = web.application(urls, globals())
-#store = web.session.DBStore(db, 'sessions')
-#session = web.session.Session(app, store)
+store = web.session.DiskStore('sessions')
+session = web.session.Session(app, store)
 session = dict()
 session.login = session.privilage = 0
 
