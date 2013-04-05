@@ -1,1 +1,1 @@
-web: python wikihandler.py $PORT
+web: python handler.py $PORT
