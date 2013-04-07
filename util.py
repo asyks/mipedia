@@ -11,28 +11,6 @@ def make_dict_from_params(params, paramDict):
     paramPair = param.split('=')
     paramDict[paramPair.pop()] = paramPair.pop()
 
-## methods for creating wiki page headers
-def make_logged_out_header(t):
-  historyHtml = '<a href="/w/_hist/%s">history</a>' % t
-  signupHtml = '<a href="/w/signup">signup</a>'
-  loginHtml = '<a href="/a/login">login</a>'
-  authHtml = signupHtml + '|' + loginHtml
-  return historyHtml, authHtml
-  
-def make_logged_in_header(t, u):
-  historyHtml = '<a href="/w/_hist/%s">history</a>' % t
-  authHtml = '%s(<a href="/a/logout">logout</a>)' % u
-  editHtml = '<a href="/w/_edit/%s">edit</a>' % t
-  return historyHtml, authHtml, editHtml
-
-## date format and string substitution procedures 
-def format_datetime(date_time):
-  time_format = '%c' 
-  return date_time.strftime(time_format)
-
-def make_last_edit_str(time):
-  return 'This page was last edited on: %s' % time
- 
 ## sign-up form validation stuff
 USER_RE = re.compile("^[a-zA-Z0-9_-]{3,20}$")
 PASS_RE = re.compile("^.{3,20}$")

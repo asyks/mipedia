@@ -17,16 +17,15 @@
 <nav class="header">
 	<a href="/" class="site-title">Mickipebia</a>
 	<ul class="user-options">
-		<li class="edit-and-history">
-		{% if edit %}
-			{{ edit | safe }}|
-		{% endif %}
-		{% if history %}
-			{{ history | safe }}
-		{% endif %}
-		</li>
 		<li class="login-and-logout">
-			{{ auth | safe }}
+			{% if user %}
+				logged in as:
+				{{ user }}(<a href="/a/logout">logout</a>)
+      {% else %}
+				<a href="/a/login">login</a>
+				|
+				<a href="/a/signup">signup</a>
+			{% endif %}
 		</li>
 	</ul>
 </nav>

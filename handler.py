@@ -7,7 +7,7 @@ class Handler:
   def __init__(self):
     self.lastPage = '/'
     self.p = dict()
-    self.u = self.read_user_cookie()
+    self.p['user'] = self.u = self.read_user_cookie()
     if self.u:
       web.session.login = 1
     else:
@@ -62,12 +62,12 @@ class Handler:
 class Index(Handler):
 
   def GET(self):
-    return self.render('index.html')
+    return self.render('index.html', **self.p)
 
 class SignUp(Handler):
 
   def GET(self):
-    return self.render('signup.html')
+    return self.render('signup.html', **self.p)
 
   def POST(self):
     i = web.input()
@@ -135,13 +135,7 @@ class WikiRead(Handler):
         raise web.seeother('/w/_edit/' + t)
       else:
         raise web.seeother(self.lastPage)
-    if self.u:
-      self.p['history'], self.p['auth'], self.p['edit'] = \
-        util.make_logged_in_header(t, self.u)
-    else:
-      self.p['history'], self.p['auth'] = \
-        util.make_logged_out_header(w.title)
-    return self.render('view.html', **self.p)
+    return self.render('read.html', **self.p)
 
 class WikiEdit(Handler):
 
@@ -162,8 +156,6 @@ class WikiEdit(Handler):
       w = dbm.wikis.select_by_title_and_version(t=t,v=v)[0]
       self.p['title'], self.p['content'], self.p['edited'] = \
         w.title, w.content, w.created
-    self.p['history'], self.p['auth'], self.p['edit'] = \
-      util.make_logged_in_header(t, self.u)
     return self.render('edit.html', **self.p)
 
   def POST(self, t):
@@ -181,8 +173,6 @@ class WikiHist(Handler):
       raise web.seeother(self.lastPage)
     w = list(dbm.wikis.select_by_title(t=t))
     self.p['page_history'], self.p['title'] = w, t
-    self.p['history'], self.p['auth'], self.p['edit'] = \
-      util.make_logged_in_header(t, self.u)
     return self.render('hist.html', **self.p)
 
 PAGE_RE = '((?:[a-zA-Z0-9_-]+))'

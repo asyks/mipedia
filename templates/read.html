@@ -1,0 +1,12 @@
+{% extends "wikibase.html" %}
+
+{% block body %}
+
+	<div class="wiki-title" id="title">
+		{{ title }}
+	</div>
+	<div class="wiki-content" id="content">
+		{{content|safe}}
+	</div>
+
+{% endblock %}

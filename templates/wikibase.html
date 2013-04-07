@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="wiki-options">
+	{% block header %}
+		<table>
+			<tr>
+				<td>
+					<a href="/w/{{ title }}">read</a>
+				</td>
+				<td>
+					<a href="/w/_edit/{{ title }}">edit</a>
+				</td>
+				<td>
+					<a href="/w/_hist/{{ title }}">history</a>
+				</td>
+			</tr>
+		</table>
+	{% endblock %}
+</div>
+
+<div class="wiki-body">
+	{% block body %}
+	{% endblock %}
+</div>
+
+	{% block footer %}
+		{% if edited %}
+			<div class="wiki-footer" id="edited">
+				page last edited:
+				{{ edited.strftime('%Y-%m-%d %H:%M:%S') }}
+			</div>
+		{% endif %}
+	{% endblock %}
+
+{% endblock %}

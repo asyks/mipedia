@@ -1,23 +1,22 @@
-{% extends "base.html" %}
+{% extends "wikibase.html" %}
 
-{% block content %}
+{% block body %}
 
-<div id="wiki-title">{{ title }}</div><br>
+	<div class="wiki-title" id="title">
+		{{ title }}
+	</div>
 
-<form id="wiki-edit" method="post">
-
-	<table>
-		<tr>
-			<td><textarea name="content">{{content|safe}}</textarea></td>
-		</tr>
-	</table>
-
-	<input type="submit">
-
-</form><br>
-
-<div id="edited">
-	{{ edited.strftime('%Y-%m-%d %H:%M:%S') }}
-</div>
+	<form id="wiki-edit" method="post">
+		<table>
+			<tr>
+				<td>
+					<textarea name="content">
+						{{content|safe}}
+					</textarea>
+				</td>
+			</tr>
+		</table>
+		<input type="submit">
+	</form>
 
 {% endblock %}
