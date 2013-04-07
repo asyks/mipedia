@@ -13,18 +13,16 @@ def make_dict_from_params(params, paramDict):
 
 ## methods for creating wiki page headers
 def make_logged_out_header(t):
-  historyLink = '/w/_hist/' + t
-  historyHtml = '<a href="%s">History</a>' % historyLink
+  historyHtml = '<a href="/w/_hist/%s">history</a>' % t
   signupHtml = '<a href="/w/signup">signup</a>'
-  loginHtml = '<a href="/a/login">Login</a>'
+  loginHtml = '<a href="/a/login">login</a>'
   authHtml = signupHtml + '|' + loginHtml
   return historyHtml, authHtml
   
-def make_logged_in_header(t, v, u):
-  historyLink = '/w/_hist/' + t
-  historyHtml = '<a href="%s">History</a>' % historyLink
-  authHtml = '%s(<a href="/a/logout">logout</a>' % u
-  editHtml = '<a href="/w/_edit/%s?v=%s">Edit</a>' % (t,v)
+def make_logged_in_header(t, u):
+  historyHtml = '<a href="/w/_hist/%s">history</a>' % t
+  authHtml = '%s(<a href="/a/logout">logout</a>)' % u
+  editHtml = '<a href="/w/_edit/%s">edit</a>' % t
   return historyHtml, authHtml, editHtml
 
 ## date format and string substitution procedures 

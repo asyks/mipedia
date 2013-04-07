@@ -2,33 +2,32 @@
 
 {% block content %}
 
-  <div class="wiki-header">
-		<div class="edit-and-history">
-			{{ edit | safe }} {% if edit %}|{% endif %} {{ history | safe }}
-		</div>
-		<div class="login-and-logout">
-			{{ auth | safe }}
-		</div>
-	</div>
-   
-    <br>
-		<div class="wiki-title" id="title">{{ title }}</div>
-		<br>
+<div class="wiki-title" id="title">
+	{{ title }}
+</div><br>
 
-    <table id="history-table">
+<table id="history-table">
 
-    {% for h in page_history %}
-      <tr>
-				<td class="column-two">{{h.created.strftime('%c')}}</td>
-				<td>{{h.content}}</td>
-				<td><a href="{{h.title}}?v={{h.version}}">view</a></td> 
-				<td><a href="/_edit{{h.title}}?v={{h.version}}">edit</a></td> 
-			</tr>
-		{% endfor %}
+{% for h in page_history %}
+	<tr>
+		<td class="column-two">
+			{{ h.created.strftime('%Y-%M-%d %H:%M:%S') }}
+		</td>
+		<td>
+			{{h.version}}
+		</td>
+		<td>
+			{{h.content}}
+		</td>
+		<td>
+			<a href="/w/{{h.title}}/?v={{h.version}}">view</a>
+		</td> 
+		<td>
+			<a href="/w/_edit/{{h.title}}?v={{h.version}}">edit</a>
+		</td> 
+	</tr>
+{% endfor %}
 
-    </table>
-
-    <br>
-    <div class="wiki-footer" id="edited">{{ edited }}</div>
+</table>
 
 {% endblock %}

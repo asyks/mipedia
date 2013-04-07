@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import web, psycopg2
+import web, psycopg2, logging
 import util
 
 db = web.database(dbn='postgres', user='aaron',
@@ -32,11 +32,12 @@ class users:
 class wikis:
 
   @classmethod
-  def insert_one(cls, t, v=None, c=''):
-    if v:
-      db.insert('wikis', title=t, version=v, content=c)
-    else:
-      db.insert('wikis', title=t, content=c)
+  def insert_one(cls, t, c=''):
+    v = db.query('SELECT max(version) AS maxversion \
+      from wikis where title=$t', vars=dict(t=t))[0].maxversion
+    v += 1
+    logging.warning(v)
+    db.insert('wikis', title=t, version=v, content=c)
 
   @classmethod
   def select_all(cls):
@@ -50,6 +51,9 @@ class wikis:
   @classmethod
   def select_by_title_and_version(cls, t, v=None):
     if v is None:
-      v = 0
-    return db.select('wikis', vars=dict(t=t,v=v), 
+      return db.query('SELECT * FROM wikis WHERE title=$t AND\
+        version=(SELECT max(version) FROM wikis WHERE title=$t)',
+        vars=dict(t=t))
+    else:
+      return db.select('wikis', vars=dict(t=t,v=v), 
         where='title=$t and version=$v')

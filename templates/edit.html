@@ -2,33 +2,22 @@
 
 {% block content %}
 
-  <div class="wiki-header">
-		<div class="edit-and-history">
-			{{ edit | safe }} {% if edit %}|{% endif %} {{ history | safe }}
-		</div>
-		<div class="login-and-logout">
-			{{ auth | safe }}
-		</div>
-	</div>
+<div id="wiki-title">{{ title }}</div><br>
 
-    <br>
+<form id="wiki-edit" method="post">
 
-		<div id="wiki-title">{{ title }}</div>
-		<br>
+	<table>
+		<tr>
+			<td><textarea name="content">{{content|safe}}</textarea></td>
+		</tr>
+	</table>
 
-		<form id="wiki-edit" method="post">
+	<input type="submit">
 
-			<table>
-				<tr>
-					<td><textarea name="content">{{content|safe}}</textarea></td>
-				</tr>
-			</table>
-  
-			<input type="submit">
+</form><br>
 
-		</form>
-
-    <br>
-    <div id="edited">{{ edited }}</div>
+<div id="edited">
+	{{ edited.strftime('%Y-%m-%d %H:%M:%S') }}
+</div>
 
 {% endblock %}

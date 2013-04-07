@@ -1,0 +1,25 @@
+
+CREATE TABLE users(
+	id serial NOT NULL,
+	username character varying(80) NOT NULL,
+	passwordHash character varying NOT NULL,
+	email character varying(100) NOT NULL,
+	privilege integer NOT NULL DEFAULT 0,
+	CONSTRAINT utilisateur_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE wikis(
+	id serial NOT NULL,
+  title character varying(100) NOT NULL,
+	version integer NOT NULL DEFAULT 0,
+	content text DEFAULT NULL,
+	create timestamp with time zone DEFAULT now(),
+	PRIMARY KEY (id, version)
+);
+
+CREATE TABLE sessions(
+	id char(128) NOT NULL,
+	time timestamp NOT NULL default CURRENT_TIMESTAMP
+	data text,
+	PRIMARY KEY (id)
+);

@@ -14,9 +14,24 @@
 
 <body>
 
-	<a href="/" class="main-title">Mickipebia</a>
+<nav class="header">
+	<a href="/" class="site-title">Mickipebia</a>
+	<ul class="user-options">
+		<li class="edit-and-history">
+		{% if edit %}
+			{{ edit | safe }}|
+		{% endif %}
+		{% if history %}
+			{{ history | safe }}
+		{% endif %}
+		</li>
+		<li class="login-and-logout">
+			{{ auth | safe }}
+		</li>
+	</ul>
+</nav>
 
-	<div id="content">
+	<div id="main">
 		{% block content %}
 		{% endblock %}
 	</div>
@@ -24,3 +39,4 @@
 </body>
 
 </html>
+ 

@@ -1,20 +1,74 @@
 body {
-    font-family: Helvetica, Arial, sans-serif;
-    font-size: 18px;
-    width: 800px;
-    margin: 0 auto;
-    padding: 10px;
-    color: #333;
+	font-size: 18px;
+	color: #333;
 }
 
+div#main {
+  width: 800px;
+	margin: 0 auto;
+	font-family: Helvetica, Arial, sans-serif;
+}
+
+nav.header {
+	display: block;
+  padding: 10px;
+  border-style: solid;
+  border-bottom-width: 2px;
+  border-top-width: 0px;
+  border-left-width: 0px;
+  border-right-width: 0px;
+  border-color: #8C8C8C;
+}
+
+a.site-title {
+  font-family: "Times New Roman", Times, serif; 
+	color: #121212;
+	font-size: 40px;
+	text-align: left;
+	text-decoration: none;
+}
+
+.site-title:first-letter {
+	font-weight: bold;
+}
+
+ul.user-options {
+  float: right;
+	list-style: none;
+	font-size: 14px;
+	color: #C0C0C0;
+	text-align: right; 
+}
+
+ul.user-options > li {
+	display: inline;
+}
+
+ul.user-options > li > a {
+	text-decoration: none;
+}
+
+.edit-and-history {
+/*	float: left;
+	margin-left: 550px;
+*/
+}
+
+.login-and-logout {
+/*
+	float: right;
+*/
+}
+
+
 h2 {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
+	font-size: 24px;
+	font-weight: bold;
+	margin-bottom: 20px;
 }
 
 .error {
-    color: red;
+	color: red;
 }
 
 label {
@@ -23,14 +77,21 @@ label {
 }
 
 label + label {
-    margin-top: 20px;
+	margin-top: 20px;
 }
 
 input[type=text] {
-    width: 200px;
-    font-size: 20px;
-    padding: 2px;
-    font-family: monospace;
+	width: 200px;
+	font-size: 20px;
+	padding: 2px;
+	font-family: monospace;
+}
+
+input[type=password] {
+	width: 200px;
+	font-size: 20px;
+	padding: 2px;
+	font-family: monospace;
 }
 
 textarea[name=content] {
@@ -48,71 +109,46 @@ table[id=history-table] {
 	width: 800px;
 }
 
+table[id=history-table] tr:nth-child(odd) {
+	background-color: #F0F0F0;
+}
+
 td.column-two {
 	width: 25%;
 }
 
-tr:nth-child(odd) {
-	background-color: #E0FFFF;
-}
-
-.main-title {
-    display: block;
-    color: #222;
-    font-size: 40px;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 30px;
-    text-decoration: none;
-}
-
 .post + .post {
-    margin-top: 15px;
+	margin-top: 15px;
 }
 
 .post-heading {
-    position: relative;
-    border-bottom: 3px solid #666;
-}
-
-.wiki-header {
-		color: #C0C0C0;
-		text-align: right; 
-    text-decoration: none;
-}
-
-.edit-and-history {
-		float: left;
-		margin-left: 550px;
-}
-
-.login-and-logout {
-		float: right;
+	position: relative;
+	border-bottom: 3px solid #666;
 }
 
 .wiki-title {
-    font-size: 28px;
-    font-weight: bold;
+	font-size: 28px;
+	font-weight: bold;
 }
 
 .wiki-content {
-		font-size: 18px;
+	font-size: 18px;
 }
 
 .wiki-footer {
-		color: #C0C0C0;
-		text-align: right;
-		font-size: 16px;
+	color: #C0C0C0;
+	text-align: right;
+	font-size: 16px;
 }
 
 .post-date {
-    position: absolute;
-    right: 0px;
-    bottom: 0px;
-    color: #999;
+	position: absolute;
+	right: 0px;
+	bottom: 0px;
+	color: #999;
 }
 
 .wiki-content {
-    margin-top: 5px;
-		white-space: normal;
+	margin-top: 5px;
+	white-space: normal;
 }

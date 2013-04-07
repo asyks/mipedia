@@ -8,33 +8,33 @@ class Handler:
     self.lastPage = '/'
     self.p = dict()
     self.u = self.read_user_cookie()
-    logging.warning(self.u)
     if self.u:
-      session.login = 1
+      web.session.login = 1
     else:
-      session.login = 0
+      web.session.login = 0
+    web.header('Content-Type', 'text/html')
 
   def login(self, u, p):
     try:
       r = dbm.users.select_by_name(u)[0]
       if r and util.check_hash(u, p, r.get('passwordhash')):
         self.set_user_cookie(u)
-        session.login = 1
+        web.session.login = 1
       else:
         logging.warning('passwords do not match')
-        session.login = 0
+        web.session.login = 0
     except error:
       logging.warning('there was an error logging in')
-      session.login = 0
-    return session.login
+      web.session.login = 0
+    return web.session.login
 
   def logout(self):
     self.remove_user_cookie()
-    session.login = 0
-    return session.login
+    web.session.login = 0
+    return web.session.login
 
   def logged(self):
-    return session.login == 1
+    return web.session.login == 1
 
   def set_user_cookie(self, val):
     secureVal = util.make_secure_val(str(val))
@@ -46,7 +46,7 @@ class Handler:
 
   def read_user_cookie(self):
     cookieValue = web.cookies().get('user')
-    return cookieValue and check_secure_val(cookieValue)
+    return cookieValue and util.check_secure_val(cookieValue)
 
   def render(self, templateName, **context):
     extensions = context.pop('extensions', [])
@@ -137,7 +137,7 @@ class WikiRead(Handler):
         raise web.seeother(self.lastPage)
     if self.u:
       self.p['history'], self.p['auth'], self.p['edit'] = \
-        util.make_logged_in_header(w.title, w.version, self.u)
+        util.make_logged_in_header(t, self.u)
     else:
       self.p['history'], self.p['auth'] = \
         util.make_logged_out_header(w.title)
@@ -163,7 +163,7 @@ class WikiEdit(Handler):
       self.p['title'], self.p['content'], self.p['edited'] = \
         w.title, w.content, w.created
     self.p['history'], self.p['auth'], self.p['edit'] = \
-      util.make_logged_in_header(w.title, w.version, self.u)
+      util.make_logged_in_header(t, self.u)
     return self.render('edit.html', **self.p)
 
   def POST(self, t):
@@ -171,20 +171,18 @@ class WikiEdit(Handler):
       raise web.seeother(self.lastPage)
     i = web.input()
     c = i.content
-    v = dbm.wikis.select_by_title(t=t)[0].version + 1
-    dbm.wikis.insert_one(t=t,v=v,c=c)
-    raise web.seeother('/w/%s?v=%s' % (t, v))
+    dbm.wikis.insert_one(t=t, c=c)
+    raise web.seeother('/w/%s' % t)
 
 class WikiHist(Handler):
 
   def GET(self, t):
     if not self.u:
       raise web.seeother(self.lastPage)
-    w = dbm.wikis.select_by_title(t=t)
+    w = list(dbm.wikis.select_by_title(t=t))
     self.p['page_history'], self.p['title'] = w, t
-    w = w[0]
     self.p['history'], self.p['auth'], self.p['edit'] = \
-      util.make_logged_in_header(w.title, w.version, self.u)
+      util.make_logged_in_header(t, self.u)
     return self.render('hist.html', **self.p)
 
 PAGE_RE = '((?:[a-zA-Z0-9_-]+))'
@@ -198,11 +196,9 @@ urls = (
   '/w/' + PAGE_RE + '/?', WikiRead
 )
 web.config.debug = False
-app = web.application(urls, globals(), autoreload=False)
-application = app.wsgifunc()
-store = web.session.DiskStore('sessions')
-session = web.session.Session(app, store)
-session.login = session.privilage = 0
+app = web.application(urls, globals(), autoreload=True)
+web.session.Session(app, web.session.DiskStore('sessions'))
+web.session.login = web.session.privilage = 0
 
 if __name__ == "__main__":
   app.run()
