@@ -33,11 +33,14 @@ class wikis:
 
   @classmethod
   def insert_one(cls, t, c=''):
-    v = db.query('SELECT max(version) AS maxversion \
-      from wikis where title=$t', vars=dict(t=t))[0].maxversion
-    v += 1
-    logging.warning(v)
-    db.insert('wikis', title=t, version=v, content=c)
+    try:
+      v = db.query('SELECT max(version) AS maxversion \
+        from wikis where title=$t', vars=dict(t=t))[0].maxversion
+      v += 1
+      db.insert('wikis', title=t, version=v, content=c)
+    except:
+      db.insert('wikis', title=t, content=c)
+      
 
   @classmethod
   def select_all(cls):

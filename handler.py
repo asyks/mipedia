@@ -1,12 +1,13 @@
 
 import web, os, hashlib, jinja2, psycopg2, logging
-import dbm, util
+import dbm, util, route
 
 class Handler:
 
   def __init__(self):
     self.lastPage = '/'
     self.p = dict()
+    self.p['paths'] = route.paths
     self.p['user'] = self.u = self.read_user_cookie()
     if self.u:
       web.session.login = 1
@@ -175,16 +176,16 @@ class WikiHist(Handler):
     self.p['page_history'], self.p['title'] = w, t
     return self.render('hist.html', **self.p)
 
-PAGE_RE = '((?:[a-zA-Z0-9_-]+))'
 urls = (
-  '/?', Index,
-  '/a/signup/?', SignUp,
-  '/a/login/?', Login,
-  '/a/logout/?', Logout,
-  '/w/_edit/' + PAGE_RE + '/?', WikiEdit,
-  '/w/_hist/' + PAGE_RE + '/?', WikiHist,
-  '/w/' + PAGE_RE + '/?', WikiRead
+  route.paths.get('index'), Index,
+  route.paths.get('signup'), SignUp,
+  route.paths.get('login'), Login,
+  route.paths.get('logout'), Logout,
+  route.paths.get('wikiedit'), WikiEdit,
+  route.paths.get('wikihist'), WikiHist,
+  route.paths.get('wikiread'), WikiRead
 )
+
 web.config.debug = False
 app = web.application(urls, globals(), autoreload=True)
 web.session.Session(app, web.session.DiskStore('sessions'))
