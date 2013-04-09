@@ -1,9 +1,11 @@
 body {
 	margin: 0px;
+	background-color: #F5F5F5;
 }
 
 a {
 	text-decoration: none;
+	color: #303030;
 }
 
 div#main {
@@ -15,22 +17,22 @@ div#main {
 
 nav.header {
 	display: block;
-	background-color: #F5F5F5;
+  background-color: #1B1B1B;
   padding: 10px;
   border-style: solid;
-  border-bottom-width: 1px;
+  border-bottom-width: 2px;
   border-top-width: 0px;
   border-left-width: 0px;
   border-right-width: 0px;
-  border-color: #0198E1;
+	border-color: #808080;
 }
 
 a.site-title {
   font-family: "Times New Roman", Times, serif; 
-	color: #121212;
 	font-size: 40px;
 	text-align: left;
 	text-decoration: none;
+	color: #F5F5F5;
 }
 
 a.site-title:first-letter {
@@ -41,8 +43,8 @@ ul.user-options {
   float: right;
 	list-style: none;
 	font-size: 14px;
-	color: #808080;
 	text-align: right; 
+	color: #808080;
 }
 
 ul.user-options > li {
@@ -51,6 +53,8 @@ ul.user-options > li {
 
 ul.user-options > li > a {
 	text-decoration: none;
+	color: #F5F5F5;
+	color: #808080;
 }
 
 div.wiki-body {
@@ -59,13 +63,15 @@ div.wiki-body {
   border-top-width: 1px;
   border-left-width: 0px;
   border-right-width: 0px;
-  border-color: #0198E1;
+	background-color: #FFFFFF;
+	border-color: #808080;
+  padding: 5px;
 }
 
 .wiki-footer {
-	color: #808080;
 	text-align: right;
 	font-size: 16px;
+	color: #808080;
 }
 
 div.wiki-options {
@@ -84,7 +90,8 @@ div.wiki-options > table {
   border-top-width: 0px;
   border-left-width: 1px;
   border-right-width: 1px;
-  border-color: #0198E1;
+	border-color: #808080;
+	background-color: #FFFFFF;
 }
 
 div.wiki-options > table td {
@@ -94,7 +101,7 @@ div.wiki-options > table td {
   border-top-width: 0px;
   border-left-width: 0px;
   border-right-width: 1px;
-  border-color: #0198E1;
+	border-color: #808080;
 }
 
 div.wiki-options a {
@@ -123,7 +130,7 @@ h2 {
 }
 
 .error {
-	color: red;
+	color: #FF0000;
 }
 
 label {
@@ -150,18 +157,18 @@ input[type=password] {
 }
 
 textarea[name=content] {
-  width: 800px;
+  width: 100%;
   height: 400px;
   font-size: 17px;
   font-family: monospace;
 }
 
 input[type=submit] {
-  font-size: 24px;
+  font-size: 18px;
 }
 
 table[id=history-table] {
-	width: 800px;
+	width: 100%;
 }
 
 table[id=history-table] tr:nth-child(odd) {

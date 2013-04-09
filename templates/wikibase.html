@@ -7,13 +7,13 @@
 		<table>
 			<tr>
 				<td>
-					<a href="/w/{{ title }}">read</a>
+					<a href={{ paths.get('wikiread') + title }}>read</a>
 				</td>
 				<td>
-					<a href="/w/_edit/{{ title }}">edit</a>
+					<a href={{ paths.get('wikiedit') + title }}>edit</a>
 				</td>
 				<td>
-					<a href="/w/_hist/{{ title }}">history</a>
+					<a href={{ paths.get('wikihist') + title }}>history</a>
 				</td>
 			</tr>
 		</table>

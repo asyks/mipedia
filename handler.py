@@ -5,7 +5,8 @@ import dbm, util, route
 class Handler:
 
   def __init__(self):
-    self.lastPage = '/'
+    self.referer = web.ctx.env.get('HTTP_REFERER',
+      route.paths.get('index'))
     self.p = dict()
     self.p['paths'] = route.paths
     self.p['user'] = self.u = self.read_user_cookie()
@@ -97,26 +98,26 @@ class SignUp(Handler):
     else:
       dbm.users.insert_one(u=i.username, p=i.password, e=i.email)
       s = self.login(i.username, i.password)
-      raise web.seeother(self.lastPage) ## try replace raise w/ return
+      raise web.seeother(self.referer)
 
 class Login(Handler):
 
   def GET(self):
     if self.logged():
-      web.seeother(self.lastPage)
+      web.seeother(self.referer)
     else:
-      return self.render('login.html')
+      return self.render('login.html', **self.p)
 
   def POST(self):
     i = web.input()
     s = self.login(u=i.username, p=i.password)
-    raise web.seeother(self.lastPage)
+    raise web.seeother(self.referer)
 
 class Logout(Handler):
 
   def GET(self):
     s = self.logout() 
-    raise web.seeother(self.lastPage)
+    raise web.seeother(self.referer)
 
 class WikiRead(Handler):
   
@@ -135,14 +136,14 @@ class WikiRead(Handler):
         dbm.wikis.insert_one(t=t)
         raise web.seeother('/w/_edit/' + t)
       else:
-        raise web.seeother(self.lastPage)
+        raise web.seeother(self.referer)
     return self.render('read.html', **self.p)
 
 class WikiEdit(Handler):
 
   def GET(self, t):
     if not self.u:
-      raise web.seeother(self.lastPage)
+      raise web.seeother(self.referer)
     i = web.input()
     try:
       v = i.v
@@ -161,7 +162,7 @@ class WikiEdit(Handler):
 
   def POST(self, t):
     if not self.u:
-      raise web.seeother(self.lastPage)
+      raise web.seeother(self.referer)
     i = web.input()
     c = i.content
     dbm.wikis.insert_one(t=t, c=c)
@@ -171,19 +172,19 @@ class WikiHist(Handler):
 
   def GET(self, t):
     if not self.u:
-      raise web.seeother(self.lastPage)
+      raise web.seeother(self.referer)
     w = list(dbm.wikis.select_by_title(t=t))
     self.p['page_history'], self.p['title'] = w, t
     return self.render('hist.html', **self.p)
 
 urls = (
-  route.paths.get('index'), Index,
-  route.paths.get('signup'), SignUp,
-  route.paths.get('login'), Login,
-  route.paths.get('logout'), Logout,
-  route.paths.get('wikiedit'), WikiEdit,
-  route.paths.get('wikihist'), WikiHist,
-  route.paths.get('wikiread'), WikiRead
+  route.routes.get('index'), Index,
+  route.routes.get('signup'), SignUp,
+  route.routes.get('login'), Login,
+  route.routes.get('logout'), Logout,
+  route.routes.get('wikiedit'), WikiEdit,
+  route.routes.get('wikihist'), WikiHist,
+  route.routes.get('wikiread'), WikiRead
 )
 
 web.config.debug = False

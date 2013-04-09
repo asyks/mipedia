@@ -32,10 +32,14 @@
 				{{h.content}}
 			</td>
 			<td>
-				<a href="/w/{{h.title}}/?v={{h.version}}">view</a>
+				<a href={{paths.get('wikiread')+h.title}}/?v={{h.version}}>
+					view
+				</a>
 			</td> 
 			<td>
-				<a href="/w/_edit/{{h.title}}?v={{h.version}}">edit</a>
+				<a href={{paths.get('wikiedit')+h.title}}/?v={{h.version}}>
+					edit
+				</a>
 			</td> 
 		</tr>
 	{% endfor %}

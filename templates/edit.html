@@ -7,16 +7,10 @@
 	</div>
 
 	<form id="wiki-edit" method="post">
-		<table>
-			<tr>
-				<td>
-					<textarea name="content">
-						{{content|safe}}
-					</textarea>
-				</td>
-			</tr>
-		</table>
-		<input type="submit">
+		<textarea name="content">
+			{{content|safe}}
+		</textarea>
+		<input type="submit" value="commit version">
 	</form>
 
 {% endblock %}
