@@ -86,7 +86,7 @@ class SignUp(Handler):
     elif not util.password_verify(i.password, i.verify):
       have_error = True
       self.p['errorPassword'] = 'Passwords don\'t match'
-    if not email_validate(i.email):
+    if not util.email_validate(i.email):
       have_error=True
       self.p['errorEmail'] = 'email address not valid'
     elif dbm.users.select_by_email(i.email):

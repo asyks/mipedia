@@ -30,10 +30,20 @@
 	</ul>
 </nav>
 
-	<div id="main">
-		{% block content %}
-		{% endblock %}
-	</div>
+<div class="sidebar">
+	<form name="entry" action="/w/entry">
+		<label>
+			New Topic:
+		</label>
+		<input type="text">
+		<input type="submit" value="enter">
+	</form>
+</div>
+
+<div id="main">
+	{% block content %}
+	{% endblock %}
+</div>
 
 </body>
 

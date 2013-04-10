@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import hashlib, hmac, string, random, re
+import hashlib, hmac, string, random, re, html5lib
 import logging
 from datetime import datetime
 
@@ -10,6 +10,11 @@ def make_dict_from_params(params, paramDict):
   for param in params:
     paramPair = param.split('=')
     paramDict[paramPair.pop()] = paramPair.pop()
+
+## html santize function
+def sanitize_html(t):
+  p = html5lib.HTMLParser(tokenizer=sanitizer.HTMLSanitizer)
+  return p.parse(t)
 
 ## sign-up form validation stuff
 USER_RE = re.compile("^[a-zA-Z0-9_-]{3,20}$")

@@ -57,6 +57,12 @@ ul.user-options > li > a {
 	color: #808080;
 }
 
+div.sidebar {
+	float: left;
+	width: 150px;
+	padding: 10px;
+}
+
 div.wiki-body {
   border-style: solid;
   border-bottom-width: 0px;

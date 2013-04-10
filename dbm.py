@@ -11,7 +11,8 @@ class users:
   @classmethod
   def insert_one(cls, u, p, e):
     h = util.make_hash(u, p)
-    db.insert('users', username=u, passwordhash=h, email=e)
+    with db.transaction():
+      db.insert('users', username=u, passwordhash=h, email=e)
 
   @classmethod
   def select_all(cls):
@@ -34,14 +35,15 @@ class wikis:
   @classmethod
   def insert_one(cls, t, c=''):
     try:
-      v = db.query('SELECT max(version) AS maxversion \
-        from wikis where title=$t', vars=dict(t=t))[0].maxversion
-      v += 1
-      db.insert('wikis', title=t, version=v, content=c)
+      with db.transaction():
+        v = db.query('SELECT max(version) AS maxversion \
+          from wikis where title=$t', vars=dict(t=t))[0].maxversion
+        v += 1
+        db.insert('wikis', title=t, version=v, content=c)
     except:
-      db.insert('wikis', title=t, content=c)
+      with db.transaction():
+        db.insert('wikis', title=t, content=c)
       
-
   @classmethod
   def select_all(cls):
     return db.select('wikis', order='created DESC')
