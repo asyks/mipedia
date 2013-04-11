@@ -9,7 +9,8 @@ paths = dict(
   logout   = '/a/logout',
   wikiread = '/w/',
   wikiedit = '/w/_edit/',
-  wikihist = '/w/_hist/'
+  wikihist = '/w/_hist/',
+  wikidisc = '/w/_disc'
 )
 
 routes = dict(
@@ -19,5 +20,6 @@ routes = dict(
   logout   = paths.get('logout') + '/?',
   wikiread = paths.get('wikiread') + PAGE_RE + '/?',
   wikiedit = paths.get('wikiedit') + PAGE_RE + '/?',
-  wikihist = paths.get('wikihist') + PAGE_RE + '/?'
+  wikihist = paths.get('wikihist') + PAGE_RE + '/?',
+  wikidisc = paths.get('wikidisc') + '/?'
 )

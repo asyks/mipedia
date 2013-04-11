@@ -31,11 +31,11 @@
 </nav>
 
 <div class="sidebar">
-	<form name="entry" action="/w/entry">
+	<form method="post" action={{ paths.get('wikidisc') }}>
 		<label>
 			New Topic:
 		</label>
-		<input type="text">
+		<input name="entry" type="text">
 		<input type="submit" value="enter">
 	</form>
 </div>

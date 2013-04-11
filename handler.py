@@ -5,8 +5,6 @@ import dbm, util, route
 class Handler:
 
   def __init__(self):
-    self.referer = web.ctx.env.get('HTTP_REFERER',
-      route.paths.get('index'))
     self.p = dict()
     self.p['paths'] = route.paths
     self.p['user'] = self.u = self.read_user_cookie()
@@ -15,6 +13,10 @@ class Handler:
     else:
       web.session.login = 0
     web.header('Content-Type', 'text/html')
+
+  def get_referer(self):
+    self.referer = web.ctx.env.get('HTTP_REFERER',
+      route.paths.get('index'))
 
   def login(self, u, p):
     try:
@@ -98,11 +100,12 @@ class SignUp(Handler):
     else:
       dbm.users.insert_one(u=i.username, p=i.password, e=i.email)
       s = self.login(i.username, i.password)
-      raise web.seeother(self.referer)
+      raise web.seeother(route.paths.get('index'))
 
 class Login(Handler):
 
   def GET(self):
+    self.get_referer()
     if self.logged():
       web.seeother(self.referer)
     else:
@@ -111,17 +114,19 @@ class Login(Handler):
   def POST(self):
     i = web.input()
     s = self.login(u=i.username, p=i.password)
-    raise web.seeother(self.referer)
+    raise web.seeother(route.paths.get('index'))
 
 class Logout(Handler):
 
   def GET(self):
+    self.get_referer()
     s = self.logout() 
     raise web.seeother(self.referer)
 
 class WikiRead(Handler):
   
   def GET(self, t):
+    self.get_referer()
     i = web.input()
     try:
       v = i.v
@@ -130,7 +135,7 @@ class WikiRead(Handler):
     try:
       w = dbm.wikis.select_by_title_and_version(t=t,v=v)[0]
       self.p['title'], self.p['content'], self.p['edited'] = \
-        w.title, w.content, w.created
+        w.title, util.make_md(w.content), w.created
     except:
       if self.u:
         dbm.wikis.insert_one(t=t)
@@ -142,6 +147,7 @@ class WikiRead(Handler):
 class WikiEdit(Handler):
 
   def GET(self, t):
+    self.get_referer()
     if not self.u:
       raise web.seeother(self.referer)
     i = web.input()
@@ -161,6 +167,7 @@ class WikiEdit(Handler):
     return self.render('edit.html', **self.p)
 
   def POST(self, t):
+    self.get_referer()
     if not self.u:
       raise web.seeother(self.referer)
     i = web.input()
@@ -171,17 +178,26 @@ class WikiEdit(Handler):
 class WikiHist(Handler):
 
   def GET(self, t):
+    self.get_referer()
     if not self.u:
       raise web.seeother(self.referer)
     w = list(dbm.wikis.select_by_title(t=t))
     self.p['page_history'], self.p['title'] = w, t
     return self.render('hist.html', **self.p)
 
+class WikiDisc(Handler):
+
+  def POST(self):
+    i = web.input()
+    e = i.entry
+    raise web.seeother(route.paths.get('wikiread') + e)
+
 urls = (
   route.routes.get('index'), Index,
   route.routes.get('signup'), SignUp,
   route.routes.get('login'), Login,
   route.routes.get('logout'), Logout,
+  route.routes.get('wikidisc'), WikiDisc,
   route.routes.get('wikiedit'), WikiEdit,
   route.routes.get('wikihist'), WikiHist,
   route.routes.get('wikiread'), WikiRead
