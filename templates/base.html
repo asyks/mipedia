@@ -14,29 +14,30 @@
 
 <body>
 
-<nav class="header">
-	<a href={{ paths.get('index') }} class="site-title">Mickipebia</a>
-	<ul class="user-options">
-		<li class="login-and-logout">
-			{% if user %}
-				logged in as:
-				{{ user }}(<a href={{ paths.get('logout') }}>logout</a>)
-      {% else %}
-				<a href={{ paths.get('login') }}>login</a>
-				|
-				<a href={{ paths.get('signup') }}>signup</a>
-			{% endif %}
-		</li>
-	</ul>
+<nav class="navbar">
+	<div class="title-container">
+		<a href={{ paths.get('index') }} class="site-title">Mipedia</a>
+	</div>
+	<div class="user-options-container">
+		<ul class="user-options">
+			<li class="login-and-logout">
+				{% if user %}
+					logged in as:
+					{{ user }}(<a href={{ paths.get('logout') }}>logout</a>)
+				{% else %}
+					<a href={{ paths.get('login') }}>login</a>
+					|
+					<a href={{ paths.get('signup') }}>signup</a>
+				{% endif %}
+			</li>
+		</ul>
+	</div>
 </nav>
 
 <div class="sidebar">
 	<form method="post" action={{ paths.get('wikidisc') }}>
-		<label>
-			New Topic:
-		</label>
-		<input name="entry" type="text">
-		<input type="submit" value="enter">
+		<input type="text" name="entry" class="search" placeholder="Enter a New Topic">
+		<input type="submit" value="enter" class="search">
 	</form>
 </div>
 

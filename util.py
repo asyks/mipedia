@@ -2,7 +2,7 @@
 
 import hashlib, hmac, string, random, re, markdown, logging
 from datetime import datetime
-from html5lib import HTMLParser, sanitizer
+from lxml.html.clean import clean_html
 
 ## deprecated method for making a dict out of a web.data() return str
 def make_dict_from_params(params, paramDict):
@@ -13,8 +13,7 @@ def make_dict_from_params(params, paramDict):
 
 ## html santize function
 def sanitize_html(t):
-  p = html5lib.HTMLParser(tokenizer=sanitizer.HTMLSanitizer)
-  return p.parse(t)
+  return clean_html(t)
 
 def make_md(t):
   return markdown.markdown(t)

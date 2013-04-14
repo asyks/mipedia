@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import web, psycopg2, logging
-import util
+import util, cache
 
 db = web.database(dbn='postgres', user='aaron',
   pw='gimmie some sql', db ='wiki1')
@@ -33,16 +33,16 @@ class users:
 class wikis:
 
   @classmethod
-  def insert_one(cls, t, c=''):
+  def insert_one(cls, t, u, c=''):
     try:
       with db.transaction():
         v = db.query('SELECT max(version) AS maxversion \
           from wikis where title=$t', vars=dict(t=t))[0].maxversion
         v += 1
-        db.insert('wikis', title=t, version=v, content=c)
+        db.insert('wikis', title=t, version=v, content=c, username=u)
     except:
       with db.transaction():
-        db.insert('wikis', title=t, content=c)
+        db.insert('wikis', title=t, content=c, username=u)
       
   @classmethod
   def select_all(cls):

@@ -10,10 +10,11 @@ CREATE TABLE users(
 
 CREATE TABLE wikis(
 	id serial NOT NULL,
-  title character varying(100) NOT NULL,
+	title character varying NOT NULL,
 	version integer NOT NULL DEFAULT 0,
 	content text DEFAULT NULL,
-	create timestamp with time zone DEFAULT now(),
+	username character varying,
+	created timestamp with time zone DEFAULT now(),
 	PRIMARY KEY (id, version)
 );
 

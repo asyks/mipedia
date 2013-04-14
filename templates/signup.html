@@ -2,51 +2,46 @@
 
 {% block content %}	
 
-<h2>Create a new account:</h2>
-
-<form method='post'>
-
-	<table>
-
-		<tr>
-			<td class="label">Username:</td>
-			<td>
-				<input type='text' name='username' value='{{username}}'>
-			</td>
-			<td class='error'>{{errorUsername}}</td>
-		</tr>
-
-		<tr>
-			<td class="label">Password:</td>
-			<td>
-				<input type='password' name='password' value='{{password}}'>
-			</td>
-			<td class='error'>{{errorPassword}}</td>
-		</tr>
-
-		<tr>
-			<td class="label">Verify Password:</td>
-			<td>
-				<input type='password' name='verify' value='{{verify}}'>
-			</td>
-			<td class='error'>{{errorVerify}}</td>
-		</tr>
-
-		<tr>
-			<td class="label">Email (optional):</td>
-			<td>
-				<input type='text' name='email' value='{{email}}'>
-			</td>
-			<td class='error'>{{errorEmail}}</td>
-		</tr>
-
-	</table>
-
-		<input type="submit" value="create account">
-
-</form>
-
-	if you already have an account:
-	<a href={{ paths.get('login') }}>Login Here</a>
+<div class="user-form-container">
+	<h2>Create an Account</h2>
+	<form method='post'>
+		<table>
+			<tr>
+				<td class="label">Username:</td>
+				<td>
+					<input type='text' name='username' value='{{username}}'>
+				</td>
+				<td class='error'>{{errorUsername}}</td>
+			</tr>
+			<tr>
+				<td class="label">Password:</td>
+				<td>
+					<input type='password' name='password' value='{{password}}'>
+				</td>
+				<td class='error'>{{errorPassword}}</td>
+			</tr>
+			<tr>
+				<td class="label">Verify Password:</td>
+				<td>
+					<input type='password' name='verify' value='{{verify}}'>
+				</td>
+				<td class='error'>{{errorVerify}}</td>
+			</tr>
+			<tr>
+				<td class="label">Email (optional):</td>
+				<td>
+					<input type='text' name='email' value='{{email}}'>
+				</td>
+				<td class='error'>{{errorEmail}}</td>
+			</tr>
+		</table>
+			<input type="submit" value="signup" class="users signup">
+	</form>
+	<div class="users-footer">
+		<a href={{ paths.get('login') }}>
+			already have an account? click here to login Here
+		</div>
+	</a>
+</div>
 
 {% endblock %}

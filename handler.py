@@ -1,6 +1,5 @@
-
 import web, os, hashlib, jinja2, psycopg2, logging
-import dbm, util, route
+import route, dbm, util, cache
 
 class Handler:
 
@@ -138,7 +137,7 @@ class WikiRead(Handler):
         w.title, util.make_md(w.content), w.created
     except:
       if self.u:
-        dbm.wikis.insert_one(t=t)
+        dbm.wikis.insert_one(t=t,u=self.u)
         raise web.seeother('/w/_edit/' + t)
       else:
         raise web.seeother(self.referer)
@@ -158,12 +157,12 @@ class WikiEdit(Handler):
     try:
       w = dbm.wikis.select_by_title_and_version(t=t,v=v)[0]
       self.p['title'], self.p['content'], self.p['edited'] = \
-        w.title, w.content, w.created
+        w.title, util.make_md(w.content), w.created
     except:
-      dbm.wikis.insert_one(t=t)
+      dbm.wikis.insert_one(t=t, u=self.u)
       w = dbm.wikis.select_by_title_and_version(t=t,v=v)[0]
       self.p['title'], self.p['content'], self.p['edited'] = \
-        w.title, w.content, w.created
+        w.title, util.make_md(w.content), w.created
     return self.render('edit.html', **self.p)
 
   def POST(self, t):
@@ -172,7 +171,10 @@ class WikiEdit(Handler):
       raise web.seeother(self.referer)
     i = web.input()
     c = i.content
-    dbm.wikis.insert_one(t=t, c=c)
+    logging.warning(c)
+    logging.warning(util.sanitize_html(c))
+    logging.warning(util.make_md(c))
+    dbm.wikis.insert_one(t=t, u=self.u, c=c)
     raise web.seeother('/w/%s' % t)
 
 class WikiHist(Handler):

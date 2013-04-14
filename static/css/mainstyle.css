@@ -8,28 +8,40 @@ a {
 	color: #303030;
 }
 
+h2 {
+	margin-bottom: 10px;
+	font-size: 20px;
+	font-weight: bold;
+}
+
 div#main {
   width: 800px;
+	height: auto;
 	margin: 0 auto;
 	font-family: Helvetica, Arial, sans-serif;
 	color: #303030;
 }
 
-nav.header {
+nav.navbar {
+	height: 40px;
 	display: block;
-  background-color: #1B1B1B;
+  background-color: #333333;
   padding: 10px;
   border-style: solid;
-  border-bottom-width: 2px;
+  border-bottom-width: 5px;
   border-top-width: 0px;
   border-left-width: 0px;
   border-right-width: 0px;
 	border-color: #808080;
 }
 
+div.title-container {
+	float: left;
+}
+
 a.site-title {
   font-family: "Times New Roman", Times, serif; 
-	font-size: 40px;
+	font-size: 30px;
 	text-align: left;
 	text-decoration: none;
 	color: #F5F5F5;
@@ -39,21 +51,27 @@ a.site-title:first-letter {
 	font-weight: bold;
 }
 
-ul.user-options {
+div.user-options-container {
   float: right;
+	margin: 0px;
+	padding: 10px;
+}
+
+ul.user-options {
+	display: inline;
 	list-style: none;
+  margin: 0px;
+	padding: 0px;
 	font-size: 14px;
-	text-align: right; 
 	color: #808080;
 }
 
-ul.user-options > li {
+ul.user-options li {
 	display: inline;
 }
 
-ul.user-options > li > a {
+ul.user-options li a {
 	text-decoration: none;
-	color: #F5F5F5;
 	color: #808080;
 }
 
@@ -61,6 +79,27 @@ div.sidebar {
 	float: left;
 	width: 150px;
 	padding: 10px;
+}
+
+input[type=text].search {
+	font-size: 14px;
+	color: #303030;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #808080;
+	background-color: #F5F5F5;
+	text-decoration: none;
+}
+
+input[type=submit].search {
+  margin-top: 5px;
+	margin-right: 0px;
+	margin-left: 0px;
+	font-size: 14px;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #808080;
+	color: #303030;
 }
 
 div.wiki-body {
@@ -129,37 +168,42 @@ div.wiki-options a {
 	white-space: normal;
 }
 
-h2 {
-	font-size: 20px;
-	font-weight: bold;
-	margin-bottom: 20px;
-}
-
 .error {
 	color: #FF0000;
 }
 
-label {
-  display: block;
-  font-size: 20px;
+div.user-form-container {
+	width: 50%;
 }
 
-label + label {
-	margin-top: 20px;
+div.users-footer {
+	margin-top: 30px;
 }
 
 input[type=text] {
+	border-width: 1px;
+	border-style: solid;
+	border-color: #808080;
+	background-color: #F5F5F5;
 	width: 200px;
-	font-size: 20px;
 	padding: 2px;
 	font-family: monospace;
+	font-size: 14px;
+	color: #303030;
+	text-decoration: none;
 }
 
 input[type=password] {
+	border-width: 1px;
+	border-style: solid;
+	border-color: #808080;
+	background-color: #F5F5F5;
 	width: 200px;
-	font-size: 20px;
 	padding: 2px;
 	font-family: monospace;
+	font-size: 14px;
+	color: #303030;
+	text-decoration: none;
 }
 
 textarea[name=content] {
@@ -169,10 +213,21 @@ textarea[name=content] {
   font-family: monospace;
 }
 
-input[type=submit] {
-  font-size: 18px;
+input[type=submit].users {
+	float: right;
+  margin-top: 5px;
+	margin-right: 102px;
+	margin-left: 0px;
+	font-size: 16px;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #808080;
+	color: #303030;
 }
 
+input[type=submit].signup {
+	margin-right:55px;	
+}
 table[id=history-table] {
 	width: 100%;
 }

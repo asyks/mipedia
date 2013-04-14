@@ -2,38 +2,33 @@
 
 {% block content %}
 
-<h2>Login</h2>
-
-<form method='post'>
-
-	<table>
-		<tr>
-			<td class="label">
-				Username:
-			</td>
-			<td>
-				<input type='text' name='username' value='{{username}}'>
-			</td>
-		</tr>
-		<tr>
-			<td class="label">
-				Password:
-			</td>
-			<td>
-				<input type='password' name='password' value='{{password}}'>
-			</td>
-		</tr>
-		<tr>
-			<td class='error'>
-				{{error}}
-			</td>
-		</tr>
-	</table>
-
-		<input type="submit" value="login">
-
-</form>
-
-<a href={{ paths.get('signup') }}>Signup to create an account</a>
+<div class="user-form-container">
+	<h2>Login</h2>
+	<form method='post'>
+		<table>
+			<tr>
+				<td class="label">Username:</td>
+				<td>
+					<input type='text' name='username' value='{{username}}'>
+				</td>
+			</tr>
+			<tr>
+				<td class="label">Password:</td>
+				<td>
+					<input type='password' name='password' value='{{password}}'>
+				</td>
+			</tr>
+			<tr>
+				<td class='error'>{{error}}</td>
+			</tr>
+		</table>
+			<input type="submit" value="login" class="users">
+	</form>
+	<div class="users-footer">
+		<a href={{ paths.get('signup') }}>
+			not signed up? click here to create an account
+		</a>
+	<div>
+</div>
 
 {% endblock %}
