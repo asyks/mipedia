@@ -1,8 +1,7 @@
 #!/usr/bin/python
 
-import hashlib, hmac, string, random, re, markdown, logging
+import hashlib, hmac, string, random, re, markdown, lxml, logging
 from datetime import datetime
-from lxml.html.clean import clean_html
 
 ## deprecated method for making a dict out of a web.data() return str
 def make_dict_from_params(params, paramDict):
@@ -13,7 +12,9 @@ def make_dict_from_params(params, paramDict):
 
 ## html santize function
 def sanitize_html(t):
-  return clean_html(t)
+  document = lxml.html.document_fromstring(t)
+  rawText = document.text_content()
+  return rawText
 
 def make_md(t):
   return markdown.markdown(t)

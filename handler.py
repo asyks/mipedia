@@ -157,12 +157,12 @@ class WikiEdit(Handler):
     try:
       w = dbm.wikis.select_by_title_and_version(t=t,v=v)[0]
       self.p['title'], self.p['content'], self.p['edited'] = \
-        w.title, util.make_md(w.content), w.created
+        w.title, w.content, w.created
     except:
       dbm.wikis.insert_one(t=t, u=self.u)
       w = dbm.wikis.select_by_title_and_version(t=t,v=v)[0]
       self.p['title'], self.p['content'], self.p['edited'] = \
-        w.title, util.make_md(w.content), w.created
+        w.title, w.content, w.created
     return self.render('edit.html', **self.p)
 
   def POST(self, t):
@@ -170,10 +170,7 @@ class WikiEdit(Handler):
     if not self.u:
       raise web.seeother(self.referer)
     i = web.input()
-    c = i.content
-    logging.warning(c)
-    logging.warning(util.sanitize_html(c))
-    logging.warning(util.make_md(c))
+    c = util.sanitize_html(i.content)
     dbm.wikis.insert_one(t=t, u=self.u, c=c)
     raise web.seeother('/w/%s' % t)
 
