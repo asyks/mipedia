@@ -50,15 +50,27 @@ class wikis:
 
   @classmethod
   def select_by_title(cls, t):
-    return db.select('wikis', vars=dict(t=t), where='title=$t', 
-      order='created DESC')
+    w = cache.wikis.get(t)
+    if not w:
+      w = db.select('wikis', vars=dict(t=t), where='title=$t', 
+        order='created DESC')
+      logging.warning(w)
+      success = cache.wikis.set(t, w)
+    return w
 
   @classmethod
   def select_by_title_and_version(cls, t, v=None):
     if v is None:
-      return db.query('SELECT * FROM wikis WHERE title=$t AND\
-        version=(SELECT max(version) FROM wikis WHERE title=$t)',
-        vars=dict(t=t))
+      w = cache.wikis.get(t)
+      logging.warning(w)
+      if not w:
+        w = db.query('SELECT * FROM wikis WHERE title=$t AND\
+          version=(SELECT max(version) FROM wikis WHERE title=$t)',
+          vars=dict(t=t))
+        logging.warning(w)
+        success = cache.wikis.set(t, w)
+        logging.warning(success)
     else:
-      return db.select('wikis', vars=dict(t=t,v=v), 
+      w = db.select('wikis', vars=dict(t=t,v=v), 
         where='title=$t and version=$v')
+    return w
