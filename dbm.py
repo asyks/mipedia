@@ -7,7 +7,7 @@ import util, cache
 #  pw='gimmie some sql', db ='wiki1')
 
 db = web.database(dbn='postgres', user='quiyctuhkrcjqx',
-  pw='wyIdssBQ6tPveIYr35AWdRP8m8', db ='wyIdssBQ6tPveIYr35AWdRP8m8',
+  pw='wyIdssBQ6tPveIYr35AWdRP8m8', db ='d761e3fpm7nemi',
   host='ec2-107-21-101-4.compute-1.amazonaws.com', port='5432')
 
 class users:
