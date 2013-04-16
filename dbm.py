@@ -3,8 +3,11 @@
 import web, psycopg2, logging
 import util, cache
 
-db = web.database(dbn='postgres', user='aaron',
-  pw='gimmie some sql', db ='wiki1')
+#db = web.database(dbn='postgres', user='aaron',
+#  pw='gimmie some sql', db ='wiki1')
+
+db = web.database(dbn='postgres', user='quiyctuhkrcjqx',
+  pw='wyIdssBQ6tPveIYr35AWdRP8m8', db ='wyIdssBQ6tPveIYr35AWdRP8m8')
 
 class users:
 
