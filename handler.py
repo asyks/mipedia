@@ -26,7 +26,7 @@ class Handler:
       else:
         logging.warning('passwords do not match')
         web.session.login = 0
-    except error:
+    except:
       logging.warning('there was an error logging in')
       web.session.login = 0
     return web.session.login
