@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import hashlib, hmac, string, random, re, markdown, lxml, logging
+import hashlib, hmac, string, random, re, markdown, lxml.html
 from datetime import datetime
 
 ## deprecated method for making a dict out of a web.data() return str
