@@ -9,6 +9,7 @@
 	<meta content="text/html" charset="utf-8">
 	<link rel="icon" type="image/png" href="/static/img/favicon.ico" />
 	<link rel="stylesheet" type="text/css" href="/static/css/mainstyle.css" />
+	<link href='http://fonts.googleapis.com/css?family=Noto+Serif' rel='stylesheet' type='text/css'>
 
 </head>
 
@@ -26,7 +27,9 @@
 					{{ user }}(<a href={{ paths.get('logout') }}>logout</a>)
 				{% else %}
 					<a href={{ paths.get('login') }}>login</a>
+			</li>
 					|
+			<li class="login-and-logout">
 					<a href={{ paths.get('signup') }}>signup</a>
 				{% endif %}
 			</li>

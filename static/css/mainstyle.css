@@ -1,11 +1,16 @@
 body {
 	margin: 0px;
 	background-color: #F5F5F5;
+  font-family: 'Noto Serif', serif;
 }
 
 a {
 	text-decoration: none;
 	color: #303030;
+}
+
+a:hover {
+	color: #008B8B;	
 }
 
 h2 {
@@ -18,7 +23,6 @@ div#main {
   width: 800px;
 	height: auto;
 	margin: 0 auto;
-	font-family: Helvetica, Arial, sans-serif;
 	color: #303030;
 }
 
@@ -35,16 +39,23 @@ nav.navbar {
 	border-color: #808080;
 }
 
+div.title-container:hover a {
+	color: #FFFFFF;	
+}
+
+li.login-and-logout:hover a {
+	color: #FFFFFF;
+}
+
 div.title-container {
 	float: left;
 }
 
 a.site-title {
-  font-family: "Times New Roman", Times, serif; 
 	font-size: 30px;
 	text-align: left;
 	text-decoration: none;
-	color: #F5F5F5;
+	color: #CCCCCC;
 }
 
 a.site-title:first-letter {
@@ -100,6 +111,10 @@ input[type=submit].search {
 	border-style: solid;
 	border-color: #808080;
 	color: #303030;
+}
+
+input[type=submit]:hover {
+	background-color: #FFFFFF;
 }
 
 div.wiki-body {
@@ -189,14 +204,21 @@ div.wiki-options a {
 
 .error {
 	color: #FF0000;
+	margin-top: 30px;
+	height: 30px
 }
 
 div.user-form-container {
 	width: 50%;
 }
 
+div.signup-form-container {
+	width: 80%;
+}
+
 div.users-footer {
 	margin-top: 30px;
+	height: 15px
 }
 
 input[type=text] {
@@ -245,7 +267,7 @@ input[type=submit].users {
 }
 
 input[type=submit].signup {
-	margin-right:55px;	
+	margin-right:295px;	
 }
 table[id=history-table] {
 	width: 100%;
@@ -256,5 +278,5 @@ table[id=history-table] tr:nth-child(odd) {
 }
 
 td.column-two {
-	width: 25%;
+	width: 40%;
 }

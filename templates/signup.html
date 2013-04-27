@@ -2,7 +2,7 @@
 
 {% block content %}	
 
-<div class="user-form-container">
+<div class="signup-form-container">
 	<h2>Create an Account</h2>
 	<form method='post'>
 		<table>
@@ -11,28 +11,28 @@
 				<td>
 					<input type='text' name='username' value='{{username}}'>
 				</td>
-				<td class='error'>{{errorUsername}}</td>
+				<td class='column-two error'>{{errorUsername}}</td>
 			</tr>
 			<tr>
 				<td class="label">Password:</td>
 				<td>
 					<input type='password' name='password' value='{{password}}'>
 				</td>
-				<td class='error'>{{errorPassword}}</td>
+				<td class='column-two error'>{{errorPassword}}</td>
 			</tr>
 			<tr>
 				<td class="label">Verify Password:</td>
 				<td>
 					<input type='password' name='verify' value='{{verify}}'>
 				</td>
-				<td class='error'>{{errorVerify}}</td>
+				<td class='column-two error'>{{errorVerify}}</td>
 			</tr>
 			<tr>
 				<td class="label">Email (optional):</td>
 				<td>
 					<input type='text' name='email' value='{{email}}'>
 				</td>
-				<td class='error'>{{errorEmail}}</td>
+				<td class='column-two error'>{{errorEmail}}</td>
 			</tr>
 		</table>
 			<input type="submit" value="signup" class="users signup">

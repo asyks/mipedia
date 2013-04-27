@@ -12,6 +12,7 @@ class Handler:
     else:
       web.session.login = 0
     web.header('Content-Type', 'text/html')
+    logging.warning(web.session.login)
 
   def get_referer(self):
     self.referer = web.ctx.env.get('HTTP_REFERER',
@@ -24,10 +25,14 @@ class Handler:
         self.set_user_cookie(u)
         web.session.login = 1
       else:
-        logging.warning('passwords do not match')
+        errorMsg = 'username and password do not match'
+        logging.warning(errorMsg)
+        self.p['error'] = errorMsg
         web.session.login = 0
     except:
-      logging.warning('there was an error logging in')
+      errorMsg = 'that user doesn\'t exist'
+      logging.warning(errorMsg)
+      self.p['error'] = errorMsg
       web.session.login = 0
     return web.session.login
 
@@ -41,8 +46,8 @@ class Handler:
 
   def set_user_cookie(self, val):
     secureVal = util.make_secure_val(str(val))
-    web.setcookie(name='user',value=secureVal,
-      expires=3600,secure=False)
+    web.setcookie(name='user', value=secureVal,
+      expires=7200, secure=False)
   
   def remove_user_cookie(self):
     web.setcookie(name='user',value='',expires=-1,secure=False)
@@ -92,7 +97,7 @@ class SignUp(Handler):
       self.p['errorEmail'] = 'email address not valid'
     elif dbm.users.select_by_email(i.email):
       have_error=True
-      self.p['errorEmail'] = 'email address already taken'
+      self.p['errorEmail'] = 'email address already in use'
     if have_error:
       self.p['username'], self.p['email'] = i.username, i.email
       return self.render('signup.html', **self.p)
@@ -113,6 +118,8 @@ class Login(Handler):
   def POST(self):
     i = web.input()
     s = self.login(u=i.username, p=i.password)
+    if s == 0:
+      return self.render('login.html', **self.p)
     raise web.seeother(route.paths.get('index'))
 
 class Logout(Handler):
@@ -206,6 +213,7 @@ web.config.debug = False
 app = web.application(urls, globals(), autoreload=True)
 web.session.Session(app, web.session.DiskStore('sessions'))
 web.session.login = web.session.privilage = 0
+web.config.session_parameters['cookie_name'] = 'user'
 
 if __name__ == "__main__":
   app.run()

@@ -18,12 +18,10 @@
 					<input type='password' name='password' value='{{password}}'>
 				</td>
 			</tr>
-			<tr>
-				<td class='error'>{{error}}</td>
-			</tr>
 		</table>
 			<input type="submit" value="login" class="users">
 	</form>
+	<div class="error">{{error}}</div>
 	<div class="users-footer">
 		<a href={{ paths.get('signup') }}>
 			not signed up? click here to create an account
