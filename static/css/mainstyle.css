@@ -23,20 +23,24 @@ div#main {
   width: 800px;
 	height: auto;
 	margin: 0 auto;
+	margin-left: 250px;
 	color: #303030;
 }
 
-nav.navbar {
+header {
 	height: 40px;
-	display: block;
   background-color: #333333;
-  padding: 10px;
   border-style: solid;
   border-bottom-width: 5px;
   border-top-width: 0px;
   border-left-width: 0px;
   border-right-width: 0px;
 	border-color: #808080;
+}
+
+nav.navbar {
+	display: block;
+  padding: 10px;
 }
 
 div.title-container:hover a {
@@ -88,7 +92,7 @@ ul.user-options li a {
 
 div.sidebar {
 	float: left;
-	width: 150px;
+	width: 210px;
 	padding: 10px;
 }
 
