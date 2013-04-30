@@ -38,6 +38,7 @@ header {
 }
 
 nav.navbar {
+	height: 40px;
 	display: block;
   padding: 10px;
 }
